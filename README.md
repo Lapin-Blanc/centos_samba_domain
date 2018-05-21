@@ -1,0 +1,1 @@
+# centos_samba_domain
