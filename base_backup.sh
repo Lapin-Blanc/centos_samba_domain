@@ -5,24 +5,26 @@ dd if=/dev/sda of=/root/bootsectors bs=512 count=248
 
 BORGUSER="borguser"
 BORGHOST="srv.example.com"
-BORGPATH="home/borguser/wonderland/hole2"
+BORGPATH="wonderland/hole"
 
-REPOSITORY=$BORGUSER@$BORGHOST:/$BORGPATH
+REPOSITORY=$BORGUSER@$BORGHOST:/home/${BORGUSER}/$BORGPATH
 
+####################################################
+#### Install borgbackup if first time
+# wget https://github.com/borgbackup/borg/releases/download/1.1.5/borg-linux64 -O /usr/local/bin/borg
+# chmod +x /usr/local/bin/borg
 #### initialy, the repository has to be initialized with these commands :
 # ssh-keygen -t ed25519
-# ssh-copy-id $BORGUSER@$BORGPATH
-# ssh $BORGUSER@$BORGPATH
+# ssh-copy-id $BORGUSER@$BORGHOST
+# ssh $BORGUSER@$BORGHOST
 
 #### On remote server
-# mkdir wonderland/hole1 -p
-# chmod 0750 $BORGPATH
-# logout
+# ssh $BORGUSER@$BORGHOST "mkdir ~/${BORGPATH} -p; chmod 0750 ${BORGPATH}"
 
-# borg init --encryption=keyfile $REPOSITORY 
-#### then export and move the key to a *safe* place 
-#  borg key export ./borg_key
-
+# borg init --encryption=keyfile $REPOSITORY
+#### then export and move the key to a *safe* place
+# borg key export ./borg_key
+#####################################################
 
 #Bail if borg is already running, maybe previous run didn't finish
 if pidof -x borg >/dev/null; then
@@ -36,7 +38,7 @@ export BORG_PASSPHRASE='superpassphrase'
 # export BORG_PASSCOMMAND='pass show backup'
 
 # Backup all except a few excluded directories
-borg create -v --stats  --progress              \
+/usr/local/bin/borg create -v --stats --progress\
     $REPOSITORY::'{hostname}-{now:%Y-%m-%d}'    \
     /                                           \
     --exclude '/dev'                            \
