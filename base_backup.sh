@@ -38,7 +38,7 @@ export BORG_PASSPHRASE='superpassphrase'
 # export BORG_PASSCOMMAND='pass show backup'
 
 # Backup all except a few excluded directories
-/usr/local/bin/borg create -v --stats --progress\
+/usr/local/bin/borg create -v --stats --progress \
     $REPOSITORY::'{hostname}-{now:%Y-%m-%d}'    \
     /                                           \
     --exclude '/dev'                            \
@@ -55,3 +55,5 @@ export BORG_PASSPHRASE='superpassphrase'
 # other machine's archives also.
 borg prune -v --list $REPOSITORY --prefix '{hostname}-' \
     --keep-daily=7 --keep-weekly=4 --keep-monthly=6
+# for individual file restore
+# export BORG_PASSPHRASE='superpassphrase'; borg mount $REPOSITORY /mnt
