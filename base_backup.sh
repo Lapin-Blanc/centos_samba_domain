@@ -23,7 +23,7 @@ REPOSITORY=$BORGUSER@$BORGHOST:/home/${BORGUSER}/$BORGPATH
 
 # borg init --encryption=keyfile $REPOSITORY
 #### then export and move the key to a *safe* place
-# borg key export ./borg_key
+# borg key export $REPOSITORY ./borg_key
 #####################################################
 
 #Bail if borg is already running, maybe previous run didn't finish
@@ -57,3 +57,4 @@ borg prune -v --list $REPOSITORY --prefix '{hostname}-' \
     --keep-daily=7 --keep-weekly=4 --keep-monthly=6
 # for individual file restore
 # export BORG_PASSPHRASE='superpassphrase'; borg mount $REPOSITORY /mnt
+# /root/backup.sh 2>&1 | mutt -s "Borgbackup : " -- admin@domain.com

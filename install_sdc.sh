@@ -225,4 +225,9 @@ nmcli c up ${WAN_NIC}
 # 13 - On pdc : /usr/local/bin/osync.sh /etc/osync/sysvol_sync.conf --dry --verbose
 # 14 - On pdc : /usr/local/bin/osync.sh /etc/osync/sysvol_sync.conf --verbose
 # 15 - On pdc : crontab -e
-# 16 - On pdc : */5 * * * * root  /usr/local/bin/osync.sh /etc/osync/sysvol_sync.conf --silent
+# 16 - On pdc : */5 * * * * /usr/local/bin/osync.sh /etc/osync/sysvol_sync.conf --silent
+# 17 - On pdc : cp users_sync.conf /etc/osync/
+# 18 - On pdc : /usr/local/bin/osync.sh /etc/osync/users_sync.conf --dry --verbose
+# 19 - On pdc : /usr/local/bin/osync.sh /etc/osync/users_sync.conf --verbose
+# 20 - On pdc : crontab -e
+# 21 - On pdc : 2-59/5 * * * * /usr/local/bin/osync.sh /etc/osync/users_sync.conf --silent
