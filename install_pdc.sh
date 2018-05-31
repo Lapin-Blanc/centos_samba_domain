@@ -126,7 +126,7 @@ ldconfig
 mv /etc/{krb5.conf,.old}
 /usr/local/samba/bin/samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=$REALM --domain=$NETBIOS --adminpass=$ADMIN_PWD --option="interfaces=lo $LAN_NIC" --option="bind interfaces only=yes"
 cp /usr/local/samba/private/krb5.conf /etc/
-/usr/local/samba/bin/samba-tool domain exportkeytab /etc/krb5.keytab --principal ${FQDN}
+/usr/local/samba/bin/samba-tool domain exportkeytab /etc/krb5.keytab --principal host/${FQDN}
 authconfig --enablemkhomedir --enablewinbindauth --update
 sed -i "s/^\(passwd:.*\)/\1 winbind/" /etc/nsswitch.conf
 sed -i "s/^\(group:.*\)/\1 winbind/" /etc/nsswitch.conf
