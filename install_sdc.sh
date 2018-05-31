@@ -94,9 +94,9 @@ cat >/etc/dhcp/dhcpd.conf <<EOF
 authoritative;
 subnet $(network $LAN_IP $LAN_PREFIX) netmask ${LAN_MASK} {
   range ${POOL_START} ${POOL_END};
-  option domain-name-servers ${LAN_IP} ${PDC};
+  option domain-name-servers ${LAN_IP}, ${PDC};
   option domain-name "$DOMAIN";
-  option routers ${LAN_IP} ${PDC};
+  option routers ${LAN_IP}, ${PDC};
   option broadcast-address $(broadcast $LAN_IP $LAN_PREFIX);
   default-lease-time 3600;
   max-lease-time 7200;
@@ -140,7 +140,7 @@ cat >/etc/krb5.conf <<EOF
 EOF
 
 /usr/local/samba/bin/samba-tool domain join ${DOMAIN} DC -Uadministrator%${ADMIN_PWD} --dns-backend=SAMBA_INTERNAL --option="interfaces=lo $LAN_NIC" --option="bind interfaces only=yes" --option="idmap_ldb:use rfc2307 = yes"
-/usr/local/samba/bin/samba-tool domain exportkeytab /etc/krb5.keytab
+/usr/local/samba/bin/samba-tool domain exportkeytab /etc/krb5.keytab --principal host/${FQDN}
 authconfig --enablemkhomedir --enablewinbindauth --update
 sed -i "s/^\(passwd:.*\)/\1 winbind/" /etc/nsswitch.conf
 sed -i "s/^\(group:.*\)/\1 winbind/" /etc/nsswitch.conf
